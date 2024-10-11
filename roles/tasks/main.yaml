@@ -1,0 +1,25 @@
+
+  - name: ansible to install pymsql
+    ansible.builtin.pip:
+      name:
+      - boto3
+      - botocore
+      executable: pip3.9
+
+  - name: install mysql server
+    ansible.builtin.package:
+      name:  mysql-server
+      state: present
+
+  - name: start mysql server
+    ansible.builtin.service:
+       name: mysqld
+       state: started
+       enabled: yes 
+  - name: connect mysql server
+    community.mysql.mysql_info:
+      login_user: root
+      login_password: "{{ mysql_root_password }}"
+      login_host: "{{ login_host }}"
+    ignore_errors: true
+    register: mysql_info
